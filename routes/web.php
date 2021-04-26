@@ -16,3 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => 'api/inventory/'], function () use ($router) {
+    $router->get('', 'InventoryController@index');
+    $router->post('', 'InventoryController@calculate');
+});

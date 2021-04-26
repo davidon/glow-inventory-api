@@ -40,10 +40,24 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request): JsonResponse
+    public function calculate(Request $request): JsonResponse
     {
-        $inventory = $this->inventory->create($request->all());
+        $payLoad = json_decode(trim($request->getContent()), true);
 
-        return response()->json($inventory, 201);
+        $ingredients = $payLoad['ingredients'];
+        $inventories = $this->inventory->whereIn('name', array_keys($ingredients))->get();
+        if(!$inventories) {
+            abort(204);
+        }
+        $recipeCost = 0;
+        foreach ($inventories as $inventory) {
+            $recipeCost += $ingredients[$inventory->name]  * ($inventory->total_cost / $inventory->units);
+        }
+
+        return response()->json([
+                'name' => $payLoad['name'],
+                'cost' => $recipeCost
+            ]
+        );
     }
 }
