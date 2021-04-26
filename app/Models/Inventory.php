@@ -13,8 +13,6 @@ class Inventory extends Model
 {
     use HasFactory;
 
-    public $timestamps = true; //???
-
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +22,6 @@ class Inventory extends Model
         'name',
         'units',
         'total_cost',
-        //???
         'created_at',
         'updated_at'
     ];

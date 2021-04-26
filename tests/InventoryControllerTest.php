@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
-
+/**
+ * Class InventoryControllerTest
+ */
 class InventoryControllerTest extends TestCase
 {
     public function testCalculate()
@@ -25,8 +26,8 @@ JSON;
             'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
             'body'    => $rawJson
         ]);
-        $resData = json_decode($response->getBody());
-        $this->assertSame('Beetroot Dip', $resData->name);
-        $this->assertSame(530, $resData->cost);
+        $resData = json_decode((string) $response->getBody());
+        static::assertSame('Beetroot Dip', $resData->name);
+        static::assertSame(530, $resData->cost);
     }
 }
